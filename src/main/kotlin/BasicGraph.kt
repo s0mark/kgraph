@@ -4,26 +4,20 @@ open class BasicNode<T>(
     private val _neighbors: MutableList<BasicNode<T>> = mutableListOf()
     override val neighbors: List<BasicNode<T>> = _neighbors
 
-    fun addEdge(edge: BasicEdge<T>) {
-        _neighbors.add(if (edge.from == this) edge.to else edge.from)
+    fun addEdge(node: BasicNode<T>) {
+        _neighbors.add(node)
     }
 
-    fun removeEdge(edge: BasicEdge<T>) {
-        _neighbors.remove(if (edge.from == this) edge.to else edge.from)
+    fun removeEdge(node: BasicNode<T>) {
+        _neighbors.remove(node)
     }
 
     override fun toString(): String = "$value"
 }
 
-open class BasicEdge<T>(
-    override val from: BasicNode<T>,
-    override val to: BasicNode<T>,
-) : Edge<T, BasicNode<T>>
-
-open class BasicGraph<T> : Graph<T, BasicNode<T>, BasicEdge<T>> {
+open class BasicGraph<T> : Graph<T, BasicNode<T>> {
     private val _nodes: MutableList<BasicNode<T>> = mutableListOf()
     val nodes: List<BasicNode<T>> = _nodes
-    private val edges: MutableList<BasicEdge<T>> = mutableListOf()
 
     override fun addNode(node: BasicNode<T>) {
         _nodes.add(node)
@@ -33,16 +27,14 @@ open class BasicGraph<T> : Graph<T, BasicNode<T>, BasicEdge<T>> {
         _nodes.remove(node)
     }
 
-    override fun addEdge(edge: BasicEdge<T>) {
-        edges.add(edge)
-        edge.from.addEdge(edge)
-        edge.to.addEdge(edge)
+    override fun addEdge(from: BasicNode<T>, to: BasicNode<T>) {
+        from.addEdge(to)
+        to.addEdge(from)
     }
 
-    override fun removeEdge(edge: BasicEdge<T>) {
-        edges.remove(edge)
-        edge.from.removeEdge(edge)
-        edge.to.removeEdge(edge)
+    override fun removeEdge(from: BasicNode<T>, to: BasicNode<T>) {
+        from.removeEdge(to)
+        to.removeEdge(from)
     }
 
     override fun complement(): BasicGraph<T> {
@@ -51,7 +43,7 @@ open class BasicGraph<T> : Graph<T, BasicNode<T>, BasicEdge<T>> {
         _nodes.forEach { node ->
             _nodes.forEach { neighbor ->
                 if (neighbor !in node.neighbors)
-                    complementGraph.addEdge(BasicEdge(node, neighbor))
+                    complementGraph.addEdge(node, neighbor)
             }
         }
         return complementGraph
@@ -65,16 +57,16 @@ open class BasicGraph<T> : Graph<T, BasicNode<T>, BasicEdge<T>> {
         }
 
         while (notVisited.isNotEmpty()) {
-            val visiting = notVisited.minBy { distances[it] ?: throw IllegalArgumentException("Node not in graph") }
+            val visiting = notVisited.minBy { distances.getValue(it) }
 
             visiting.neighbors
-                .filter { distances[it]!! > distances[visiting]!! + 1 }
-                .forEach { distances[it] = distances[visiting]!! + 1 }
+                .filter { distances.getValue(it) > distances.getValue(visiting) + 1 }
+                .forEach { distances[it] = distances.getValue(visiting) + 1 }
 
             notVisited.remove(visiting)
         }
 
-        return distances[end]!!
+        return distances.getValue(end)
     }
 }
 

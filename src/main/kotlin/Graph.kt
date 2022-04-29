@@ -3,17 +3,12 @@ interface Node<T> {
     val neighbors: List<Node<T>>
 }
 
-interface Edge<T, N : Node<T>> {
-    val from: N
-    val to: N
-}
-
-interface Graph<T, N : Node<T>, E : Edge<T, N>> {
+interface Graph<T, N : Node<T>> {
     fun addNode(node: N)
     fun removeNode(node: N)
-    fun addEdge(edge: E)
-    fun removeEdge(edge: E)
+    fun addEdge(from: N, to: N)
+    fun removeEdge(from: N, to: N)
 
-    fun complement(): Graph<T, N, E>
+    fun complement(): Graph<T, N>
     fun distanceBetween(start: Node<T>, end: Node<T>): Number
 }
