@@ -41,11 +41,15 @@ open class BasicGraph<T> : Graph<T, BasicNode<T>> {
 
     override fun complement(): BasicGraph<T> {
         val complementGraph = BasicGraph<T>()
-        nodes.map { BasicNode(it.value) }.forEach(complementGraph::addNode)
+        val nodesInComplement = nodes.associateWith { BasicNode(it.value) }
+        nodesInComplement.values.forEach(complementGraph::addNode)
         nodes.forEach { node ->
             nodes.forEach { neighbor ->
                 if (neighbor !in node.neighbors)
-                    complementGraph.addEdge(node, neighbor)
+                    complementGraph.addEdge(
+                        nodesInComplement.getValue(node),
+                        nodesInComplement.getValue(neighbor)
+                    )
             }
         }
         return complementGraph
@@ -69,6 +73,22 @@ open class BasicGraph<T> : Graph<T, BasicNode<T>> {
         }
 
         return distances.getValue(end)
+    }
+
+    fun toDot(): String {
+        val nodes = nodes.toList()
+        fun Node<T>.label() = "\"$this\""
+        val dot = buildString {
+            appendLine("graph G {")
+            nodes.forEachIndexed { i, node ->
+                appendLine("\t${node.label()};")
+                node.neighbors.forEach { neighbor ->
+                    if (nodes.indexOf(neighbor) > i) appendLine("\t${node.label()} -- ${neighbor.label()};")
+                }
+            }
+            appendLine("}")
+        }
+        return dot
     }
 }
 

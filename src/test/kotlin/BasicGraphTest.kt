@@ -37,12 +37,13 @@ class BasicGraphTest {
     fun `create complement`() {
         val graph: BasicGraph<Int> = BasicGraph()
         (0.. 3).forEach { graph.addNode(BasicNode(it)) }
-        val nodes: List<BasicNode<Int>> = graph.nodes.toList()
+        var nodes: List<BasicNode<Int>> = graph.nodes.toList()
         graph.addEdge(nodes[0], nodes[1])
         graph.addEdge(nodes[0], nodes[2])
         graph.addEdge(nodes[1], nodes[3])
         val complementGraph = graph.complement()
         graph.nodes.forEach { assert(it !in complementGraph.nodes) }
+        nodes = complementGraph.nodes.toList()
         assert(nodes[3] in nodes[0].neighbors)
         assert(nodes[2] in nodes[1].neighbors)
         assert(nodes[3] in nodes[2].neighbors)

@@ -5,8 +5,9 @@ open class SFSIterator<T, N : Node<T>>(graph: Graph<T, out N>, start: N? = null)
     private fun N.discover() {
         visitMap[this] = true
         for (neighbor in neighbors) {
-            if (!visitMap.getValue(neighbor as N)) toVisit.add(neighbor)
+            if (!visitMap.getValue(neighbor as N) && neighbor !in toVisit) toVisit.add(neighbor)
         }
+        toVisit.remove(this)
     }
 
     open fun nextToVisit(): N = toVisit.random()
