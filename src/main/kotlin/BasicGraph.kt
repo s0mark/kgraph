@@ -1,14 +1,14 @@
 open class BasicNode<T>(
     override val value: T
 ): Node<T> {
-    private val _neighbors: MutableList<BasicNode<T>> = mutableListOf()
-    override val neighbors: List<BasicNode<T>> = _neighbors
+    protected val _neighbors: MutableCollection<BasicNode<T>> = mutableListOf()
+    override val neighbors: Collection<BasicNode<T>> = _neighbors
 
-    fun addEdge(node: BasicNode<T>) {
+    internal open fun addEdge(node: BasicNode<T>) {
         _neighbors.add(node)
     }
 
-    fun removeEdge(node: BasicNode<T>) {
+    internal open fun removeEdge(node: BasicNode<T>) {
         _neighbors.remove(node)
     }
 
@@ -16,8 +16,8 @@ open class BasicNode<T>(
 }
 
 open class BasicGraph<T> : Graph<T, BasicNode<T>> {
-    private val _nodes: MutableList<BasicNode<T>> = mutableListOf()
-    val nodes: List<BasicNode<T>> = _nodes
+    protected val _nodes: MutableCollection<BasicNode<T>> = mutableSetOf()
+    override val nodes: Collection<BasicNode<T>> = _nodes
 
     override fun addNode(node: BasicNode<T>) {
         _nodes.add(node)
@@ -28,6 +28,8 @@ open class BasicGraph<T> : Graph<T, BasicNode<T>> {
     }
 
     override fun addEdge(from: BasicNode<T>, to: BasicNode<T>) {
+        if (!_nodes.contains(from)) _nodes.add(from)
+        if (!_nodes.contains(to)) _nodes.add(to)
         from.addEdge(to)
         to.addEdge(from)
     }
@@ -39,9 +41,9 @@ open class BasicGraph<T> : Graph<T, BasicNode<T>> {
 
     override fun complement(): BasicGraph<T> {
         val complementGraph = BasicGraph<T>()
-        _nodes.map { BasicNode(it.value) }.forEach(complementGraph._nodes::add)
-        _nodes.forEach { node ->
-            _nodes.forEach { neighbor ->
+        nodes.map { BasicNode(it.value) }.forEach(complementGraph::addNode)
+        nodes.forEach { node ->
+            nodes.forEach { neighbor ->
                 if (neighbor !in node.neighbors)
                     complementGraph.addEdge(node, neighbor)
             }
@@ -50,9 +52,9 @@ open class BasicGraph<T> : Graph<T, BasicNode<T>> {
     }
 
     override fun distanceBetween(start: Node<T>, end: Node<T>): Number {
-        val notVisited: MutableList<Node<T>> = mutableListOf<Node<T>>().apply { addAll(_nodes) }
+        val notVisited: MutableList<Node<T>> = mutableListOf<Node<T>>().apply { addAll(nodes) }
         val distances: MutableMap<Node<T>, Int> = mutableMapOf<Node<T>, Int>().apply {
-            _nodes.forEach { put(it, Int.MAX_VALUE - 1) }
+            nodes.forEach { put(it, Int.MAX_VALUE - 1) }
             put(start, 0)
         }
 
