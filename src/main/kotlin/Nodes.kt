@@ -1,3 +1,8 @@
+interface Node<T, out N : Node<T, N>> {
+    val value: T
+    val neighbors: Collection<N>
+}
+
 abstract class NodeBase<T, N : Node<T, N>>(
     override val value: T
 ) : Node<T, N> {

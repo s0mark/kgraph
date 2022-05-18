@@ -1,4 +1,5 @@
-class UndirectedSimpleGraph<T> : UndirectedGraphBase<T, SimpleNode<T>>(), SimpleGraph<T, SimpleNode<T>> {
+class UndirectedSimpleGraph<T>
+    : UndirectedGraphBase<T, SimpleNode<T>>(), UnweightedSimpleGraph<T, SimpleNode<T>> {
     override fun addNodeOf(value: T): SimpleNode<T> {
         return SimpleNode(value).also(::addNode)
     }
@@ -20,7 +21,8 @@ class UndirectedSimpleGraph<T> : UndirectedGraphBase<T, SimpleNode<T>>(), Simple
     }
 }
 
-class UndirectedMultiGraph<T> : UndirectedGraphBase<T, MultiNode<T>>(), MultiGraph<T, MultiNode<T>> {
+class UndirectedMultiGraph<T>
+    : UndirectedGraphBase<T, MultiNode<T>>(), UnweightedGraph<T, MultiNode<T>>, MultiGraph<T, MultiNode<T>> {
     override fun addNodeOf(value: T): MultiNode<T> {
         return MultiNode(value).also(::addNode)
     }

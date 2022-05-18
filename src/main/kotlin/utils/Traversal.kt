@@ -1,7 +1,9 @@
 package utils
 
+import DirectedGraph
 import Graph
 import Node
+import UndirectedGraph
 
 open class SFSIterator<T, N : Node<T, N>>(graph: Graph<T, out N>, start: N? = null) : Iterator<N> {
     private val visitMap: MutableMap<N, Boolean> = graph.nodes.associateWith { false }.toMutableMap()
@@ -35,7 +37,11 @@ class BFSIterator<T, N : Node<T, N>>(graph: Graph<T, out N>, start: N?) : SFSIte
     }
 }
 
-fun<T, N : Node<T, N>> Graph<T, out N>.bfs(start: N? = null): Iterator<N> = BFSIterator(this, start)
+fun<T, N : Node<T, N>> Graph<T, out N>.bfsIterator(start: N? = null): Iterator<N> = BFSIterator(this, start)
+
+fun<T, N : Node<T, N>> Graph<T, out N>.bfs(start: N? = null, action: (N) -> Unit) {
+    this.bfsIterator(start).forEach { action(it) }
+}
 
 class DFSIterator<T, N : Node<T, N>>(graph: Graph<T, out N>, start: N?) : SFSIterator<T, N>(graph, start) {
     override fun nextToVisit(): N {
@@ -43,5 +49,25 @@ class DFSIterator<T, N : Node<T, N>>(graph: Graph<T, out N>, start: N?) : SFSIte
     }
 }
 
-fun<T, N : Node<T, N>> Graph<T, out N>.dfs(start: N? = null): Iterator<N> = DFSIterator(this, start)
+fun<T, N : Node<T, N>> Graph<T, out N>.dfsIterator(start: N? = null): Iterator<N> = DFSIterator(this, start)
 
+fun<T, N : Node<T, N>> Graph<T, out N>.dfs(start: N? = null, action: (N) -> Unit) {
+    this.dfsIterator(start).forEach { action(it) }
+}
+
+fun<T, N : Node<T, N>> UndirectedGraph<T, out N>.forEachEdge(action: (N, N) -> Unit) {
+    nodes.forEachIndexed { i, node ->
+        node.neighbors.forEach { neighbor ->
+            if (nodes.indexOf(neighbor) > i)
+                action(node, neighbor)
+        }
+    }
+}
+
+fun<T, N : Node<T, N>> DirectedGraph<T, out N>.forEachEdge(action: (N, N) -> Unit) {
+    nodes.forEach { node ->
+        node.neighbors.forEach { neighbor ->
+            action(node, neighbor)
+        }
+    }
+}

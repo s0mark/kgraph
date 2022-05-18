@@ -1,4 +1,5 @@
-class WeightedUndirectedGraph<T> : UndirectedGraphBase<T, WeightedNode<T>>(), WeightedGraph<T, WeightedNode<T>> {
+class WeightedUndirectedGraph<T>
+    : UndirectedGraphBase<T, WeightedNode<T>>(), WeightedGraph<T, WeightedNode<T>>, SimpleGraph<T, WeightedNode<T>> {
     override fun addNodeOf(value: T): WeightedNode<T> {
         return WeightedNode(value).also(::addNode)
     }
@@ -13,7 +14,8 @@ class WeightedUndirectedGraph<T> : UndirectedGraphBase<T, WeightedNode<T>>(), We
     }
 }
 
-class WeightedDirectedGraph<T> : DirectedGraphBase<T, WeightedNode<T>>(), WeightedGraph<T, WeightedNode<T>> {
+class WeightedDirectedGraph<T>
+    : DirectedGraphBase<T, WeightedNode<T>>(), WeightedGraph<T, WeightedNode<T>>, SimpleGraph<T, WeightedNode<T>> {
     override fun addNodeOf(value: T): WeightedNode<T> {
         return WeightedNode(value).also(::addNode)
     }

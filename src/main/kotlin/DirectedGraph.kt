@@ -1,9 +1,10 @@
-class DirectedSimpleGraph<T> : DirectedGraphBase<T, SimpleNode<T>>(), SimpleGraph<T, SimpleNode<T>> {
+class DirectedSimpleGraph<T>
+    : DirectedGraphBase<T, SimpleNode<T>>(), UnweightedSimpleGraph<T, SimpleNode<T>> {
     override fun addNodeOf(value: T): SimpleNode<T> {
         return SimpleNode(value).also(::addNode)
     }
 
-    override fun complement(): SimpleGraph<T, SimpleNode<T>> {
+    override fun complement(): UnweightedSimpleGraph<T, SimpleNode<T>> {
         val complementGraph = DirectedSimpleGraph<T>()
         val nodesInComplement = nodes.associateWith { SimpleNode(it.value) }
         nodesInComplement.values.forEach(complementGraph::addNode)
@@ -20,7 +21,8 @@ class DirectedSimpleGraph<T> : DirectedGraphBase<T, SimpleNode<T>>(), SimpleGrap
     }
 }
 
-class DirectedMultiGraph<T> : DirectedGraphBase<T, MultiNode<T>>(), MultiGraph<T, MultiNode<T>> {
+class DirectedMultiGraph<T>
+    : DirectedGraphBase<T, MultiNode<T>>(), UnweightedGraph<T, MultiNode<T>>, MultiGraph<T, MultiNode<T>> {
     override fun addNodeOf(value: T): MultiNode<T> {
         return MultiNode(value).also(::addNode)
     }
