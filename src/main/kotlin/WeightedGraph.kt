@@ -1,21 +1,4 @@
-class WeightedNode<T>(value: T) : NodeBase<T, WeightedNode<T>>(value) {
-    private val _neighbors: MutableMap<WeightedNode<T>, Double> = mutableMapOf()
-    override val neighbors: Collection<WeightedNode<T>> = _neighbors.keys
-
-    override fun addEdge(node: WeightedNode<T>) = addEdge(node, 1.0)
-
-    internal fun addEdge(node: WeightedNode<T>, weight: Double) {
-        _neighbors[node] = weight
-    }
-
-    override fun removeEdge(node: WeightedNode<T>) {
-        _neighbors.remove(node)
-    }
-
-    fun getWeight(to: WeightedNode<T>): Double? = _neighbors[to]
-}
-
-class WeightedGraph<T> : GraphBase<T, WeightedNode<T>>() {
+class WeightedGraph<T> : UndirectedBaseGraph<T, WeightedNode<T>>() {
     override fun addNodeOf(value: T): WeightedNode<T> {
         return WeightedNode(value).also(::addNode)
     }
