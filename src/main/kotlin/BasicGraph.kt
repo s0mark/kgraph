@@ -19,3 +19,14 @@ class SimpleGraph<T> : UndirectedBaseGraph<T, SimpleNode<T>>() {
         return complementGraph
     }
 }
+
+class MultiGraph<T> : UndirectedBaseGraph<T, MultiNode<T>>() {
+    override fun addNodeOf(value: T): MultiNode<T> {
+        return MultiNode(value).also(::addNode)
+    }
+
+    fun removeAllEdges(from: MultiNode<T>, to: MultiNode<T>) {
+        from.removeAllEdges(to)
+        to.removeAllEdges(from)
+    }
+}
