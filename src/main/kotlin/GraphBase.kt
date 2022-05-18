@@ -13,7 +13,23 @@ abstract class GraphBase<T, N : NodeBase<T, N>> : Graph<T, N> {
         _nodes.remove(node)
     }
 
-    open fun toDot(): String {
+    abstract fun toDot(): String
+}
+
+abstract class UndirectedBaseGraph<T, N : NodeBase<T, N>> : GraphBase<T, N>() {
+    override fun addEdge(from: N, to: N) {
+        if (!_nodes.contains(from)) addNode(from)
+        if (!_nodes.contains(to)) addNode(to)
+        from.addEdge(to)
+        to.addEdge(from)
+    }
+
+    override fun removeEdge(from: N, to: N) {
+        from.removeEdge(to)
+        to.removeEdge(from)
+    }
+
+    override fun toDot(): String {
         val nodes = nodes.toList()
         fun N.label() = "\"$this\""
         val dot = buildString {
@@ -31,16 +47,30 @@ abstract class GraphBase<T, N : NodeBase<T, N>> : Graph<T, N> {
     }
 }
 
-abstract class UndirectedBaseGraph<T, N : NodeBase<T, N>> : GraphBase<T, N>() {
+abstract class DirectedBaseGraph<T, N : NodeBase<T, N>> : GraphBase<T, N>() {
     override fun addEdge(from: N, to: N) {
         if (!_nodes.contains(from)) addNode(from)
         if (!_nodes.contains(to)) addNode(to)
         from.addEdge(to)
-        to.addEdge(from)
     }
 
     override fun removeEdge(from: N, to: N) {
         from.removeEdge(to)
-        to.removeEdge(from)
+    }
+
+    override fun toDot(): String {
+        val nodes = nodes.toList()
+        fun N.label() = "\"$this\""
+        val dot = buildString {
+            appendLine("digraph G {")
+            nodes.forEach { node ->
+                appendLine("\t${node.label()};")
+                node.neighbors.forEach { neighbor ->
+                    appendLine("\t${node.label()} -> ${neighbor.label()};")
+                }
+            }
+            appendLine("}")
+        }
+        return dot
     }
 }
