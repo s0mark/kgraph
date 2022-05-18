@@ -3,13 +3,13 @@ import org.junit.Test
 import org.junit.Assert.assertEquals
 
 class GraphUtilTest {
-    private lateinit var graph: BasicGraph<Int>
-    private lateinit var nodes: List<BasicNode<Int>>
+    private lateinit var graph: SimpleGraph<Int>
+    private lateinit var nodes: List<SimpleNode<Int>>
 
     @Before
     fun setup() {
-        graph = BasicGraph()
-        (0.. 4).forEach { graph.addNode(BasicNode(it)) }
+        graph = SimpleGraph()
+        (0.. 4).forEach { graph.addNode(SimpleNode(it)) }
         nodes = graph.nodes.toList()
         graph.addEdge(nodes[0], nodes[1])
         graph.addEdge(nodes[0], nodes[2])

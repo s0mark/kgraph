@@ -1,12 +1,12 @@
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class BasicGraphTest {
+class SimpleGraphTest {
 
     @Test
     fun `modify nodes`() {
-        val graph: BasicGraph<Int> = BasicGraph()
-        val nodes: List<BasicNode<Int>> = (0.. 2).map { BasicNode(it) }
+        val graph: SimpleGraph<Int> = SimpleGraph()
+        val nodes: List<SimpleNode<Int>> = (0.. 2).map { SimpleNode(it) }
         graph.addNode(nodes[0])
         graph.addNode(nodes[1])
         graph.addNode(nodes[2])
@@ -17,9 +17,9 @@ class BasicGraphTest {
 
     @Test
     fun `modify edges`() {
-        val graph: BasicGraph<Int> = BasicGraph()
-        (0.. 2).forEach { graph.addNode(BasicNode(it)) }
-        val nodes: List<BasicNode<Int>> = graph.nodes.toList()
+        val graph: SimpleGraph<Int> = SimpleGraph()
+        (0.. 2).forEach { graph.addNode(SimpleNode(it)) }
+        val nodes: List<SimpleNode<Int>> = graph.nodes.toList()
         graph.addEdge(nodes[0], nodes[1])
         graph.addEdge(nodes[1], nodes[2])
         assert(nodes[1] in nodes[0].neighbors)
@@ -35,9 +35,9 @@ class BasicGraphTest {
 
     @Test
     fun `create complement`() {
-        val graph: BasicGraph<Int> = BasicGraph()
-        (0.. 3).forEach { graph.addNode(BasicNode(it)) }
-        var nodes: List<BasicNode<Int>> = graph.nodes.toList()
+        val graph: SimpleGraph<Int> = SimpleGraph()
+        (0.. 3).forEach { graph.addNode(SimpleNode(it)) }
+        var nodes: List<SimpleNode<Int>> = graph.nodes.toList()
         graph.addEdge(nodes[0], nodes[1])
         graph.addEdge(nodes[0], nodes[2])
         graph.addEdge(nodes[1], nodes[3])
@@ -51,9 +51,9 @@ class BasicGraphTest {
 
     @Test
     fun `find shortest path`() {
-        val graph: BasicGraph<Int> = BasicGraph()
-        (0.. 5).forEach { graph.addNode(BasicNode(it)) }
-        val nodes: List<BasicNode<Int>> = graph.nodes.toList()
+        val graph: SimpleGraph<Int> = SimpleGraph()
+        (0.. 5).forEach { graph.addNode(SimpleNode(it)) }
+        val nodes: List<SimpleNode<Int>> = graph.nodes.toList()
         graph.addEdge(nodes[0], nodes[4])
         graph.addEdge(nodes[1], nodes[2])
         graph.addEdge(nodes[2], nodes[3])
