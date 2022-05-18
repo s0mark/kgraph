@@ -12,11 +12,9 @@ abstract class GraphBase<T, N : NodeBase<T, N>> : Graph<T, N> {
         }
         _nodes.remove(node)
     }
-
-    abstract fun toDot(): String
 }
 
-abstract class UndirectedBaseGraph<T, N : NodeBase<T, N>> : GraphBase<T, N>() {
+abstract class UndirectedGraphBase<T, N : NodeBase<T, N>> : GraphBase<T, N>() {
     override fun addEdge(from: N, to: N) {
         if (!_nodes.contains(from)) addNode(from)
         if (!_nodes.contains(to)) addNode(to)
@@ -28,26 +26,9 @@ abstract class UndirectedBaseGraph<T, N : NodeBase<T, N>> : GraphBase<T, N>() {
         from.removeEdge(to)
         to.removeEdge(from)
     }
-
-    override fun toDot(): String {
-        val nodes = nodes.toList()
-        fun N.label() = "\"$this\""
-        val dot = buildString {
-            appendLine("graph G {")
-            nodes.forEachIndexed { i, node ->
-                appendLine("\t${node.label()};")
-                node.neighbors.forEach { neighbor ->
-                    if (nodes.indexOf(neighbor) > i)
-                        appendLine("\t${node.label()} -- ${neighbor.label()};")
-                }
-            }
-            appendLine("}")
-        }
-        return dot
-    }
 }
 
-abstract class DirectedBaseGraph<T, N : NodeBase<T, N>> : GraphBase<T, N>() {
+abstract class DirectedGraphBase<T, N : NodeBase<T, N>> : GraphBase<T, N>() {
     override fun addEdge(from: N, to: N) {
         if (!_nodes.contains(from)) addNode(from)
         if (!_nodes.contains(to)) addNode(to)
@@ -56,21 +37,5 @@ abstract class DirectedBaseGraph<T, N : NodeBase<T, N>> : GraphBase<T, N>() {
 
     override fun removeEdge(from: N, to: N) {
         from.removeEdge(to)
-    }
-
-    override fun toDot(): String {
-        val nodes = nodes.toList()
-        fun N.label() = "\"$this\""
-        val dot = buildString {
-            appendLine("digraph G {")
-            nodes.forEach { node ->
-                appendLine("\t${node.label()};")
-                node.neighbors.forEach { neighbor ->
-                    appendLine("\t${node.label()} -> ${neighbor.label()};")
-                }
-            }
-            appendLine("}")
-        }
-        return dot
     }
 }
