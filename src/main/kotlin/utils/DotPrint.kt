@@ -3,7 +3,8 @@ package utils
 import DirectedGraphBase
 import NodeBase
 import UndirectedGraphBase
-import WeightedGraph
+import WeightedDirectedGraph
+import WeightedUndirectedGraph
 
 private fun<T, N : NodeBase<T, N>> NodeBase<T, N>.label() = "\"$this\""
 
@@ -28,7 +29,7 @@ fun<T, N : NodeBase<T, N>> undirectedToDot(
 
 fun<T, N : NodeBase<T, N>> UndirectedGraphBase<T, out N>.toDot() = undirectedToDot(this)
 
-fun<T> WeightedGraph<T>.toDot() = undirectedToDot(this) { node, neighbor -> "${node.getWeight(neighbor)}" }
+fun<T> WeightedUndirectedGraph<T>.toDot() = undirectedToDot(this) { node, neighbor -> "${node.getWeight(neighbor)}" }
 
 fun<T, N : NodeBase<T, N>> directedToDot(
     graph: DirectedGraphBase<T, out N>,
@@ -49,3 +50,5 @@ fun<T, N : NodeBase<T, N>> directedToDot(
 }
 
 fun<T, N : NodeBase<T, N>> DirectedGraphBase<T, out N>.toDot() = directedToDot(this)
+
+fun<T> WeightedDirectedGraph<T>.toDot() = directedToDot(this) { node, neighbor -> "${node.getWeight(neighbor)}" }

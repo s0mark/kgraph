@@ -7,7 +7,7 @@ class WeightedGraphTest {
 
     @Test
     fun `create node`() {
-        val graph: WeightedGraph<Int> = WeightedGraph()
+        val graph: WeightedUndirectedGraph<Int> = WeightedUndirectedGraph()
         val nodes = (0..2).map { graph.addNodeOf(it) }
         assertEquals(0, nodes[0].value)
         assertEquals(1, nodes[1].value)
@@ -17,7 +17,7 @@ class WeightedGraphTest {
 
     @Test
     fun `modify nodes`() {
-        val graph: WeightedGraph<Int> = WeightedGraph()
+        val graph: WeightedUndirectedGraph<Int> = WeightedUndirectedGraph()
         val nodes: List<WeightedNode<Int>> = (0.. 2).map { WeightedNode(it) }
         graph.addNode(nodes[0])
         graph.addNode(nodes[1])
@@ -29,7 +29,7 @@ class WeightedGraphTest {
 
     @Test
     fun `modify edges`() {
-        val graph: WeightedGraph<Int> = WeightedGraph()
+        val graph: WeightedUndirectedGraph<Int> = WeightedUndirectedGraph()
         (0.. 2).forEach { graph.addNode(WeightedNode(it)) }
         val nodes: List<WeightedNode<Int>> = graph.nodes.toList()
         graph.addEdge(nodes[0], nodes[1])

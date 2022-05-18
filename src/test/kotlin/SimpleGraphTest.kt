@@ -5,7 +5,7 @@ class SimpleGraphTest {
 
     @Test
     fun `create node`() {
-        val graph: SimpleGraph<Int> = SimpleGraph()
+        val graph: UndirectedSimpleGraph<Int> = UndirectedSimpleGraph()
         val nodes = (0..2).map { graph.addNodeOf(it) }
         assertEquals(0, nodes[0].value)
         assertEquals(1, nodes[1].value)
@@ -15,7 +15,7 @@ class SimpleGraphTest {
 
     @Test
     fun `modify nodes`() {
-        val graph: SimpleGraph<Int> = SimpleGraph()
+        val graph: UndirectedSimpleGraph<Int> = UndirectedSimpleGraph()
         val nodes: List<SimpleNode<Int>> = (0.. 2).map { SimpleNode(it) }
         graph.addNode(nodes[0])
         graph.addNode(nodes[1])
@@ -27,7 +27,7 @@ class SimpleGraphTest {
 
     @Test
     fun `modify edges`() {
-        val graph: SimpleGraph<Int> = SimpleGraph()
+        val graph: UndirectedSimpleGraph<Int> = UndirectedSimpleGraph()
         (0.. 2).forEach { graph.addNode(SimpleNode(it)) }
         val nodes: List<SimpleNode<Int>> = graph.nodes.toList()
         graph.addEdge(nodes[0], nodes[1])
@@ -51,7 +51,7 @@ class SimpleGraphTest {
 
     @Test
     fun `create complement`() {
-        val graph: SimpleGraph<Int> = SimpleGraph()
+        val graph: UndirectedSimpleGraph<Int> = UndirectedSimpleGraph()
         (0.. 3).forEach { graph.addNode(SimpleNode(it)) }
         var nodes: List<SimpleNode<Int>> = graph.nodes.toList()
         graph.addEdge(nodes[0], nodes[1])

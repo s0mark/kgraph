@@ -11,3 +11,20 @@ interface Graph<T, N : Node<T, N>> {
     fun addEdge(from: N, to: N)
     fun removeEdge(from: N, to: N)
 }
+
+interface SimpleGraph<T, N : Node<T, N>> : Graph<T, N> {
+    fun complement(): SimpleGraph<T, N>
+}
+
+interface MultiGraph<T, N : Node<T, N>> : Graph<T, N> {
+    fun removeAllEdges(from: N, to: N)
+}
+
+interface DirectedGraph<T, N : Node<T, N>> : Graph<T, N> {
+
+}
+
+interface WeightedGraph<T, N : Node<T, N>> : Graph<T, N> {
+    fun addEdge(from: N, to: N, weight: Double)
+    override fun addEdge(from: N, to: N) = addEdge(from, to, 1.0)
+}

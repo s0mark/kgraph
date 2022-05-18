@@ -28,7 +28,7 @@ abstract class UndirectedGraphBase<T, N : NodeBase<T, N>> : GraphBase<T, N>() {
     }
 }
 
-abstract class DirectedGraphBase<T, N : NodeBase<T, N>> : GraphBase<T, N>() {
+abstract class DirectedGraphBase<T, N : NodeBase<T, N>> : GraphBase<T, N>(), DirectedGraph<T, N> {
     override fun addEdge(from: N, to: N) {
         if (!_nodes.contains(from)) addNode(from)
         if (!_nodes.contains(to)) addNode(to)

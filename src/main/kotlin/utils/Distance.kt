@@ -2,7 +2,7 @@ package utils
 
 import Graph
 import Node
-import WeightedGraph
+import WeightedUndirectedGraph
 import WeightedNode
 
 private fun<T, N : Node<T, N>> Graph<T, N>.distanceBetween(
@@ -31,7 +31,7 @@ private fun<T, N : Node<T, N>> Graph<T, N>.distanceBetween(
 
 fun<T, N : Node<T, N>> Graph<T, N>.distanceBetween(start: N, end: N): Double = distanceBetween(start, end) { _, _ -> 1.0 }
 
-fun<T> WeightedGraph<T>.distanceBetween(start: WeightedNode<T>, end: WeightedNode<T>): Double = distanceBetween(start, end) { from, to -> from.getWeight(to)!! }
+fun<T> WeightedUndirectedGraph<T>.distanceBetween(start: WeightedNode<T>, end: WeightedNode<T>): Double = distanceBetween(start, end) { from, to -> from.getWeight(to)!! }
 
 private fun <T, R : Comparable<R>> Iterable<T>.minBy(selector: (T) -> R): T {
     val iterator = iterator()
