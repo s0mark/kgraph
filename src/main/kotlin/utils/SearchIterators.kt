@@ -1,3 +1,8 @@
+package utils
+
+import Graph
+import Node
+
 open class SFSIterator<T, N : Node<T, N>>(graph: Graph<T, out N>, start: N? = null) : Iterator<N> {
     private val visitMap: MutableMap<N, Boolean> = graph.nodes.associateWith { false }.toMutableMap()
     protected val toVisit: MutableList<N> = mutableListOf(start ?: graph.nodes.first())
@@ -39,3 +44,4 @@ class DFSIterator<T, N : Node<T, N>>(graph: Graph<T, out N>, start: N?) : SFSIte
 }
 
 fun<T, N : Node<T, N>> Graph<T, out N>.dfs(start: N? = null): Iterator<N> = DFSIterator(this, start)
+

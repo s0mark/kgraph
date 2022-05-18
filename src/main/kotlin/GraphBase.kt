@@ -1,6 +1,8 @@
 abstract class NodeBase<T, N : Node<T, N>>(
     override val value: T
 ) : Node<T, N> {
+    internal abstract fun addEdge(node: N)
+    internal abstract fun removeEdge(node: N)
     override fun toString(): String = "$value"
 }
 
@@ -8,24 +10,27 @@ abstract class GraphBase<T, N : NodeBase<T, N>> : Graph<T, N> {
     protected val _nodes: MutableCollection<N> = mutableSetOf()
     override val nodes: Collection<N> = _nodes
 
-    override fun distanceBetween(start: N, end: N): Number {
-        val notVisited: MutableList<N> = mutableListOf<N>().apply { addAll(nodes) }
-        val distances: MutableMap<N, Int> = mutableMapOf<N, Int>().apply {
-            nodes.forEach { put(it, Int.MAX_VALUE - 1) }
-            put(start, 0)
+    override fun addNode(node: N) {
+        _nodes.add(node)
+    }
+
+    override fun removeNode(node: N) {
+        nodes.forEach {
+            it.removeEdge(node)
         }
+        _nodes.remove(node)
+    }
 
-        while (notVisited.isNotEmpty()) {
-            val visiting = notVisited.minBy { distances.getValue(it) }
+    override fun addEdge(from: N, to: N) {
+        if (!_nodes.contains(from)) addNode(from)
+        if (!_nodes.contains(to)) addNode(to)
+        from.addEdge(to)
+        to.addEdge(from)
+    }
 
-            visiting.neighbors
-                .filter { distances.getValue(it) > distances.getValue(visiting) + 1 }
-                .forEach { distances[it] = distances.getValue(visiting) + 1 }
-
-            notVisited.remove(visiting)
-        }
-
-        return distances.getValue(end)
+    override fun removeEdge(from: N, to: N) {
+        from.removeEdge(to)
+        to.removeEdge(from)
     }
 
     fun toDot(): String {

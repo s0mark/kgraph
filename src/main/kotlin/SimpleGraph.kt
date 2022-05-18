@@ -1,12 +1,12 @@
 class SimpleNode<T>(value: T) : NodeBase<T, SimpleNode<T>>(value) {
-    private val _neighbors: MutableCollection<SimpleNode<T>> = mutableListOf()
+    private val _neighbors: MutableCollection<SimpleNode<T>> = mutableSetOf()
     override val neighbors: Collection<SimpleNode<T>> = _neighbors
 
-    internal fun addEdge(node: SimpleNode<T>) {
+    override fun addEdge(node: SimpleNode<T>) {
         _neighbors.add(node)
     }
 
-    internal fun removeEdge(node: SimpleNode<T>) {
+    override fun removeEdge(node: SimpleNode<T>) {
         _neighbors.remove(node)
     }
 }
@@ -14,26 +14,6 @@ class SimpleNode<T>(value: T) : NodeBase<T, SimpleNode<T>>(value) {
 class SimpleGraph<T> : GraphBase<T, SimpleNode<T>>() {
     override fun addNodeOf(value: T): SimpleNode<T> {
         return SimpleNode(value).also(::addNode)
-    }
-
-    override fun addNode(node: SimpleNode<T>) {
-        _nodes.add(node)
-    }
-
-    override fun removeNode(node: SimpleNode<T>) {
-        _nodes.remove(node)
-    }
-
-    override fun addEdge(from: SimpleNode<T>, to: SimpleNode<T>) {
-        if (!_nodes.contains(from)) _nodes.add(from)
-        if (!_nodes.contains(to)) _nodes.add(to)
-        from.addEdge(to)
-        to.addEdge(from)
-    }
-
-    override fun removeEdge(from: SimpleNode<T>, to: SimpleNode<T>) {
-        from.removeEdge(to)
-        to.removeEdge(from)
     }
 
     fun complement(): SimpleGraph<T> {
@@ -51,14 +31,4 @@ class SimpleGraph<T> : GraphBase<T, SimpleNode<T>>() {
         }
         return complementGraph
     }
-}
-
-fun <T, R : Comparable<R>> Iterable<T>.minBy(selector: (T) -> R): T {
-    val iterator = iterator()
-    var min = iterator.next()
-    while (iterator.hasNext()) {
-        val e = iterator.next()
-        if (selector(min) > selector(e)) min = e
-    }
-    return min
 }

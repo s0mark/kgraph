@@ -1,10 +1,14 @@
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.junit.Assert.assertEquals
+import utils.bfs
+import utils.dfs
+import utils.distanceBetween
 
 class GraphUtilTest {
     private lateinit var graph: SimpleGraph<Int>
     private lateinit var nodes: List<SimpleNode<Int>>
+    private val tolerance = 0.00001
 
     @Before
     fun setup() {
@@ -33,5 +37,33 @@ class GraphUtilTest {
         for (node in graph.dfs(nodes[0])) {
             assertEquals(expectedOrder.removeFirst(), node)
         }
+    }
+
+    @Test
+    fun `find shortest path in simple graph`() {
+        val graph: SimpleGraph<Int> = SimpleGraph()
+        (0.. 5).forEach { graph.addNode(SimpleNode(it)) }
+        val nodes: List<SimpleNode<Int>> = graph.nodes.toList()
+        graph.addEdge(nodes[0], nodes[4])
+        graph.addEdge(nodes[1], nodes[2])
+        graph.addEdge(nodes[2], nodes[3])
+        graph.addEdge(nodes[2], nodes[5])
+        graph.addEdge(nodes[3], nodes[4])
+        graph.addEdge(nodes[4], nodes[5])
+        assertEquals(4.0, graph.distanceBetween(nodes[0], nodes[1]), tolerance)
+        assertEquals(3.0, graph.distanceBetween(nodes[0], nodes[2]), tolerance)
+        assertEquals(2.0, graph.distanceBetween(nodes[0], nodes[3]), tolerance)
+        assertEquals(1.0, graph.distanceBetween(nodes[0], nodes[4]), tolerance)
+        assertEquals(2.0, graph.distanceBetween(nodes[0], nodes[5]), tolerance)
+        assertEquals(1.0, graph.distanceBetween(nodes[1], nodes[2]), tolerance)
+        assertEquals(2.0, graph.distanceBetween(nodes[1], nodes[3]), tolerance)
+        assertEquals(3.0, graph.distanceBetween(nodes[1], nodes[4]), tolerance)
+        assertEquals(2.0, graph.distanceBetween(nodes[1], nodes[5]), tolerance)
+        assertEquals(1.0, graph.distanceBetween(nodes[2], nodes[3]), tolerance)
+        assertEquals(2.0, graph.distanceBetween(nodes[2], nodes[4]), tolerance)
+        assertEquals(1.0, graph.distanceBetween(nodes[2], nodes[5]), tolerance)
+        assertEquals(1.0, graph.distanceBetween(nodes[3], nodes[4]), tolerance)
+        assertEquals(2.0, graph.distanceBetween(nodes[3], nodes[5]), tolerance)
+        assertEquals(1.0, graph.distanceBetween(nodes[4], nodes[5]), tolerance)
     }
 }

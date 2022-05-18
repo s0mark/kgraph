@@ -10,6 +10,4 @@ interface Graph<T, N : Node<T, N>> {
     fun removeNode(node: N)
     fun addEdge(from: N, to: N)
     fun removeEdge(from: N, to: N)
-
-    fun distanceBetween(start: N, end: N): Number
 }

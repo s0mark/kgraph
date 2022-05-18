@@ -1,4 +1,3 @@
-import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class SimpleGraphTest {
@@ -29,8 +28,14 @@ class SimpleGraphTest {
         assert(nodes[0] !in nodes[2].neighbors)
         assert(nodes[1] in nodes[2].neighbors)
         graph.removeEdge(nodes[0], nodes[1])
-        assert(nodes[1] !in nodes[0].neighbors)
+        graph.addEdge(nodes[0], nodes[2])
         assert(nodes[0] !in nodes[1].neighbors)
+        assert(nodes[1] !in nodes[0].neighbors)
+        assert(nodes[0] in nodes[2].neighbors)
+        assert(nodes[2] in nodes[0].neighbors)
+        graph.removeNode(nodes[2])
+        assert(nodes[2] !in nodes[0].neighbors)
+        assert(nodes[2] !in nodes[1].neighbors)
     }
 
     @Test
@@ -47,33 +52,5 @@ class SimpleGraphTest {
         assert(nodes[3] in nodes[0].neighbors)
         assert(nodes[2] in nodes[1].neighbors)
         assert(nodes[3] in nodes[2].neighbors)
-    }
-
-    @Test
-    fun `find shortest path`() {
-        val graph: SimpleGraph<Int> = SimpleGraph()
-        (0.. 5).forEach { graph.addNode(SimpleNode(it)) }
-        val nodes: List<SimpleNode<Int>> = graph.nodes.toList()
-        graph.addEdge(nodes[0], nodes[4])
-        graph.addEdge(nodes[1], nodes[2])
-        graph.addEdge(nodes[2], nodes[3])
-        graph.addEdge(nodes[2], nodes[5])
-        graph.addEdge(nodes[3], nodes[4])
-        graph.addEdge(nodes[4], nodes[5])
-        assertEquals(4, graph.distanceBetween(nodes[0], nodes[1]))
-        assertEquals(3, graph.distanceBetween(nodes[0], nodes[2]))
-        assertEquals(2, graph.distanceBetween(nodes[0], nodes[3]))
-        assertEquals(1, graph.distanceBetween(nodes[0], nodes[4]))
-        assertEquals(2, graph.distanceBetween(nodes[0], nodes[5]))
-        assertEquals(1, graph.distanceBetween(nodes[1], nodes[2]))
-        assertEquals(2, graph.distanceBetween(nodes[1], nodes[3]))
-        assertEquals(3, graph.distanceBetween(nodes[1], nodes[4]))
-        assertEquals(2, graph.distanceBetween(nodes[1], nodes[5]))
-        assertEquals(1, graph.distanceBetween(nodes[2], nodes[3]))
-        assertEquals(2, graph.distanceBetween(nodes[2], nodes[4]))
-        assertEquals(1, graph.distanceBetween(nodes[2], nodes[5]))
-        assertEquals(1, graph.distanceBetween(nodes[3], nodes[4]))
-        assertEquals(2, graph.distanceBetween(nodes[3], nodes[5]))
-        assertEquals(1, graph.distanceBetween(nodes[4], nodes[5]))
     }
 }
