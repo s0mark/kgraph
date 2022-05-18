@@ -1,6 +1,17 @@
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class SimpleGraphTest {
+
+    @Test
+    fun `create node`() {
+        val graph: SimpleGraph<Int> = SimpleGraph()
+        val nodes = (0..2).map { graph.addNodeOf(it) }
+        assertEquals(0, nodes[0].value)
+        assertEquals(1, nodes[1].value)
+        assertEquals(2, nodes[2].value)
+        nodes.forEach { assert(it in graph.nodes) }
+    }
 
     @Test
     fun `modify nodes`() {

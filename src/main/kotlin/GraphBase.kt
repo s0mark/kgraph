@@ -33,7 +33,7 @@ abstract class GraphBase<T, N : NodeBase<T, N>> : Graph<T, N> {
         to.removeEdge(from)
     }
 
-    fun toDot(): String {
+    open fun toDot(): String {
         val nodes = nodes.toList()
         fun N.label() = "\"$this\""
         val dot = buildString {
@@ -41,7 +41,8 @@ abstract class GraphBase<T, N : NodeBase<T, N>> : Graph<T, N> {
             nodes.forEachIndexed { i, node ->
                 appendLine("\t${node.label()};")
                 node.neighbors.forEach { neighbor ->
-                    if (nodes.indexOf(neighbor) > i) appendLine("\t${node.label()} -- ${neighbor.label()};")
+                    if (nodes.indexOf(neighbor) > i)
+                        appendLine("\t${node.label()} -- ${neighbor.label()};")
                 }
             }
             appendLine("}")
