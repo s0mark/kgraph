@@ -6,8 +6,7 @@ class DirectedSimpleGraph<T>
 
     override fun complement(): UnweightedSimpleGraph<T, SimpleNode<T>> {
         val complementGraph = DirectedSimpleGraph<T>()
-        val nodesInComplement = nodes.associateWith { SimpleNode(it.value) }
-        nodesInComplement.values.forEach(complementGraph::addNode)
+        val nodesInComplement = nodes.associateWith { complementGraph.addNodeOf(it.value) }
         nodes.forEach { node ->
             nodes.forEach { neighbor ->
                 if (neighbor !in node.neighbors)

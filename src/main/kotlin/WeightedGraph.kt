@@ -7,8 +7,7 @@ class WeightedUndirectedGraph<T>
     override fun addEdge(from: WeightedNode<T>, to: WeightedNode<T>) = super<WeightedGraph>.addEdge(from, to)
 
     override fun addEdge(from: WeightedNode<T>, to: WeightedNode<T>, weight: Double) {
-        if (!_nodes.contains(from)) addNode(from)
-        if (!_nodes.contains(to)) addNode(to)
+        addIfMissing(from, to)
         from.addEdge(to, weight)
         to.addEdge(from, weight)
     }
@@ -23,8 +22,7 @@ class WeightedDirectedGraph<T>
     override fun addEdge(from: WeightedNode<T>, to: WeightedNode<T>) = super<WeightedGraph>.addEdge(from, to)
 
     override fun addEdge(from: WeightedNode<T>, to: WeightedNode<T>, weight: Double) {
-        if (_nodes.contains(from)) addNode(from)
-        if (_nodes.contains(to)) addNode(to)
+        addIfMissing(from, to)
         from.addEdge(to, weight)
     }
 }

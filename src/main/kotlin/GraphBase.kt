@@ -12,12 +12,17 @@ abstract class GraphBase<T, N : NodeBase<T, N>> : Graph<T, N> {
         }
         _nodes.remove(node)
     }
+
+    protected fun addIfMissing(vararg nodes: N) {
+        nodes.forEach { node ->
+            if (!nodes.contains(node)) addNode(node)
+        }
+    }
 }
 
 abstract class UndirectedGraphBase<T, N : NodeBase<T, N>> : GraphBase<T, N>(), UndirectedGraph<T, N> {
     override fun addEdge(from: N, to: N) {
-        if (!_nodes.contains(from)) addNode(from)
-        if (!_nodes.contains(to)) addNode(to)
+        addIfMissing(from, to)
         from.addEdge(to)
         to.addEdge(from)
     }
@@ -30,8 +35,7 @@ abstract class UndirectedGraphBase<T, N : NodeBase<T, N>> : GraphBase<T, N>(), U
 
 abstract class DirectedGraphBase<T, N : NodeBase<T, N>> : GraphBase<T, N>(), DirectedGraph<T, N> {
     override fun addEdge(from: N, to: N) {
-        if (!_nodes.contains(from)) addNode(from)
-        if (!_nodes.contains(to)) addNode(to)
+        addIfMissing(from, to)
         from.addEdge(to)
     }
 

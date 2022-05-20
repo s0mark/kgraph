@@ -2,12 +2,10 @@ package utilTests
 
 import DirectedSimpleGraph
 import SimpleNode
-import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import utils.bfs
-import utils.dfs
-import utils.forEachEdge
+import utils.*
 
 class TraverseDirectedTest {
     private lateinit var graph: DirectedSimpleGraph<Int>
@@ -28,18 +26,31 @@ class TraverseDirectedTest {
     }
 
     @Test
+    fun `default iteration on directed graph`() {
+        val expectedOrder = listOf(nodes[0], nodes[1], nodes[2], nodes[3], nodes[4])
+        var i = 0
+        for (node in graph) {
+            assertEquals(expectedOrder[i++], node)
+        }
+        i = 0
+        graph.forEachNode { assertEquals(expectedOrder[i++], it) }
+    }
+
+    @Test
     fun `BFS on directed graph`() {
-        val expectedOrder = mutableListOf(nodes[0], nodes[1], nodes[2], nodes[3], nodes[4])
+        val expectedOrder = listOf(nodes[0], nodes[1], nodes[2], nodes[3], nodes[4])
+        var i = 0
         graph.bfs(nodes[0]) {
-            Assert.assertEquals(expectedOrder.removeFirst(), it)
+            assertEquals(expectedOrder[i++], it)
         }
     }
 
     @Test
     fun `DFS on directed graph`() {
-        val expectedOrder = mutableListOf(nodes[0], nodes[3], nodes[4], nodes[2], nodes[1])
+        val expectedOrder = listOf(nodes[0], nodes[3], nodes[4], nodes[2], nodes[1])
+        var i = 0
         graph.dfs(nodes[0]) {
-            Assert.assertEquals(expectedOrder.removeFirst(), it)
+            assertEquals(expectedOrder[i++], it)
         }
     }
 

@@ -6,8 +6,7 @@ class UndirectedSimpleGraph<T>
 
     override fun complement(): UndirectedSimpleGraph<T> {
         val complementGraph = UndirectedSimpleGraph<T>()
-        val nodesInComplement = nodes.associateWith { SimpleNode(it.value) }
-        nodesInComplement.values.forEach(complementGraph::addNode)
+        val nodesInComplement = nodes.associateWith { complementGraph.addNodeOf(it.value) }
         nodes.forEachIndexed { i, node ->
             nodes.forEach { neighbor ->
                 if (nodes.indexOf(neighbor) > i && neighbor !in node.neighbors)

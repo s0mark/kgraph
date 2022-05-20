@@ -12,7 +12,7 @@ private fun<T, N : Node<T, N>> Graph<T, N>.distanceBetween(
 ): Double {
     val notVisited: MutableList<N> = mutableListOf<N>().apply { addAll(nodes) }
     val distances: MutableMap<N, Double> = mutableMapOf<N, Double>().apply {
-        nodes.forEach { put(it, Double.POSITIVE_INFINITY) }
+        forEachNode { put(it, Double.POSITIVE_INFINITY) }
         put(start, 0.0)
     }
 

@@ -31,7 +31,7 @@ open class SFSIterator<T, N : Node<T, N>>(graph: Graph<T, out N>, start: N? = nu
     }
 }
 
-class BFSIterator<T, N : Node<T, N>>(graph: Graph<T, out N>, start: N?) : SFSIterator<T, N>(graph, start) {
+class BFSIterator<T, N : Node<T, N>>(graph: Graph<T, out N>, start: N? = null) : SFSIterator<T, N>(graph, start) {
     override fun nextToVisit(): N {
         return toVisit.first()
     }
@@ -43,7 +43,9 @@ fun<T, N : Node<T, N>> Graph<T, out N>.bfs(start: N? = null, action: (N) -> Unit
     this.bfsIterator(start).forEach { action(it) }
 }
 
-class DFSIterator<T, N : Node<T, N>>(graph: Graph<T, out N>, start: N?) : SFSIterator<T, N>(graph, start) {
+operator fun<T, N : Node<T, N>> Graph<T, out N>.iterator(): Iterator<N> = nodes.iterator()
+
+class DFSIterator<T, N : Node<T, N>>(graph: Graph<T, out N>, start: N? = null) : SFSIterator<T, N>(graph, start) {
     override fun nextToVisit(): N {
         return toVisit.last()
     }
@@ -53,6 +55,10 @@ fun<T, N : Node<T, N>> Graph<T, out N>.dfsIterator(start: N? = null): Iterator<N
 
 fun<T, N : Node<T, N>> Graph<T, out N>.dfs(start: N? = null, action: (N) -> Unit) {
     this.dfsIterator(start).forEach { action(it) }
+}
+
+fun<T, N : Node<T, N>> Graph<T, out N>.forEachNode(action: (N) -> Unit) {
+    nodes.forEach { action(it) }
 }
 
 fun<T, N : Node<T, N>> UndirectedGraph<T, out N>.forEachEdge(action: (N, N) -> Unit) {
