@@ -13,9 +13,7 @@ interface MultiGraph<T, N : Node<T, N>> : Graph<T, N> {
     fun removeAllEdges(from: N, to: N)
 }
 
-interface DirectedGraph<T, N : Node<T, N>> : Graph<T, N> {
-    val isAcyclic: Boolean
-}
+interface DirectedGraph<T, N : Node<T, N>> : Graph<T, N>
 
 interface UndirectedGraph<T, N : Node<T, N>> : Graph<T, N>
 

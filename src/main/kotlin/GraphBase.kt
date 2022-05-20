@@ -42,26 +42,4 @@ abstract class DirectedGraphBase<T, N : NodeBase<T, N>> : GraphBase<T, N>(), Dir
     override fun removeEdge(from: N, to: N) {
         from.removeEdge(to)
     }
-
-    override val isAcyclic: Boolean by lazy {
-        val visitMap = nodes.associateWith { false }.toMutableMap()
-        var acyclic = true
-
-        fun N.discover(discovered: MutableList<N>): MutableList<N> {
-            visitMap[this] = true
-            neighbors.forEach { neighbor ->
-                if (!visitMap.getValue(neighbor))
-                    neighbor.discover(discovered)
-                if (!acyclic) return discovered
-            }
-            if (this in discovered) acyclic = false
-            return discovered.apply { addAll(neighbors) }
-        }
-
-        for ((node, visited) in visitMap) {
-            if (!visited) node.discover(mutableListOf())
-            if (!acyclic) break
-        }
-        acyclic
-    }
 }

@@ -7,7 +7,7 @@ import UndirectedGraph
 import WeightedDirectedGraph
 import WeightedUndirectedGraph
 
-private fun<T, N : Node<T, N>> Node<T, N>.label() = "\"$this\""
+private fun<T, N : Node<T, N>> Node<T, N>.label() = "\"$value\""
 
 private fun<T, N : Node<T, N>> graphToDot(
     graph: Graph<T, out N>,
@@ -16,7 +16,7 @@ private fun<T, N : Node<T, N>> graphToDot(
     name: String,
 ): String {
     return buildString {
-        appendLine("$type $name {")
+        appendLine("$type ${if (name.isEmpty()) "" else "$name "}{")
         graph.forEachNode { appendLine("\t${it.label()};") }
         edgeLabels()
         appendLine("}")
@@ -43,7 +43,7 @@ fun<T, N : Node<T, N>> undirectedToDot(
 fun<T, N : Node<T, N>> UndirectedGraph<T, out N>.toDot(name: String = "") = undirectedToDot(this, name)
 
 fun<T> WeightedUndirectedGraph<T>.toDot(name: String = "")
-    = undirectedToDot(this, name) { node, neighbor -> "${node.getWeight(neighbor)}" }
+    = undirectedToDot(this, name) { node, neighbor -> "[label=${node.getWeight(neighbor)}]" }
 
 fun<T, N : Node<T, N>> directedToDot(
     graph: DirectedGraph<T, out N>,
@@ -65,4 +65,4 @@ fun<T, N : Node<T, N>> directedToDot(
 fun<T, N : Node<T, N>> DirectedGraph<T, out N>.toDot(name: String = "") = directedToDot(this, name)
 
 fun<T> WeightedDirectedGraph<T>.toDot(name: String = "")
-    = directedToDot(this, name) { node, neighbor -> "${node.getWeight(neighbor)}" }
+    = directedToDot(this, name) { node, neighbor -> "[label=${node.getWeight(neighbor)}]" }
