@@ -12,6 +12,17 @@ class DirectedGraphTest {
     }
 
     @Test
+    fun `create graph`() {
+        val graph = DirectedSimpleGraph(
+            0 to 1,
+            1 to 2,
+        )
+        val nodes = graph.nodes.toList()
+        assert(nodes[1] in nodes[0].neighbors)
+        assert(nodes[2] in nodes[1].neighbors)
+    }
+
+    @Test
     fun `create node`() {
         val nodes = (0..2).map { graph.addNodeOf(it) }
         assertEquals(0, nodes[0].value)

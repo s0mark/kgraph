@@ -1,5 +1,8 @@
 class WeightedUndirectedGraph<T>
-    : UndirectedGraphBase<T, WeightedNode<T>>(), WeightedGraph<T, WeightedNode<T>>, SimpleGraph<T, WeightedNode<T>> {
+    : UndirectedGraphBase<T, WeightedNode<T>>, WeightedGraph<T, WeightedNode<T>>, SimpleGraph<T, WeightedNode<T>> {
+    constructor() :super()
+    constructor(vararg edges: Pair<T, T>) :super(*edges)
+
     override fun addNodeOf(value: T): WeightedNode<T> {
         return WeightedNode(value).also(::addNode)
     }
@@ -14,7 +17,10 @@ class WeightedUndirectedGraph<T>
 }
 
 class WeightedDirectedGraph<T>
-    : DirectedGraphBase<T, WeightedNode<T>>(), WeightedGraph<T, WeightedNode<T>>, SimpleGraph<T, WeightedNode<T>> {
+    : DirectedGraphBase<T, WeightedNode<T>>, WeightedGraph<T, WeightedNode<T>>, SimpleGraph<T, WeightedNode<T>> {
+    constructor() :super()
+    constructor(vararg edges: Pair<T, T>) :super(*edges)
+
     override fun addNodeOf(value: T): WeightedNode<T> {
         return WeightedNode(value).also(::addNode)
     }

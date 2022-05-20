@@ -1,5 +1,8 @@
 class DirectedSimpleGraph<T>
-    : DirectedGraphBase<T, SimpleNode<T>>(), UnweightedSimpleGraph<T, SimpleNode<T>> {
+    : DirectedGraphBase<T, SimpleNode<T>>, UnweightedSimpleGraph<T, SimpleNode<T>> {
+    constructor() :super()
+    constructor(vararg edges: Pair<T, T>) :super(*edges)
+
     override fun addNodeOf(value: T): SimpleNode<T> {
         return SimpleNode(value).also(::addNode)
     }
@@ -21,7 +24,10 @@ class DirectedSimpleGraph<T>
 }
 
 class DirectedMultiGraph<T>
-    : DirectedGraphBase<T, MultiNode<T>>(), UnweightedGraph<T, MultiNode<T>>, MultiGraph<T, MultiNode<T>> {
+    : DirectedGraphBase<T, MultiNode<T>>, UnweightedGraph<T, MultiNode<T>>, MultiGraph<T, MultiNode<T>> {
+    constructor() :super()
+    constructor(vararg edges: Pair<T, T>) :super(*edges)
+
     override fun addNodeOf(value: T): MultiNode<T> {
         return MultiNode(value).also(::addNode)
     }

@@ -142,4 +142,33 @@ class PropertyTest {
         assertEquals(8.0, graph.maxFlow(nodes[3], nodes[2]), tolerance)
         assertEquals(16.0, graph.maxFlow, tolerance)
     }
+
+    @Test
+    fun `max flow in large weighted graph`() {
+        val graph = WeightedDirectedGraph<Char>()
+        val a = graph.addNodeOf('a')
+        val b = graph.addNodeOf('b')
+        val c = graph.addNodeOf('c')
+        val d = graph.addNodeOf('d')
+        val e = graph.addNodeOf('e')
+        val f = graph.addNodeOf('f')
+        val s = graph.addNodeOf('s')
+        val t = graph.addNodeOf('t')
+        graph.apply {
+            addEdge(s, a, 16.0)
+            addEdge(s, d, 16.0)
+            addEdge(s, e, 10.0)
+            addEdge(a, b, 8.0)
+            addEdge(a, f, 8.0)
+            addEdge(b, c, 13.0)
+            addEdge(c, t, 18.0)
+            addEdge(d, c, 2.0)
+            addEdge(d, e, 10.0)
+            addEdge(e, b, 6.0)
+            addEdge(e, f, 7.0)
+            addEdge(f, t, 16.0)
+        }
+        assertEquals(30.0, graph.maxFlow(s, t), tolerance)
+        assertEquals(30.0, graph.maxFlow, tolerance)
+    }
 }
