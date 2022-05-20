@@ -41,6 +41,12 @@ class WeightedGraphTest {
     }
 
     @Test
+    fun `no loop edges`() {
+        graph.addEdge(nodes[0], nodes[0])
+        assert(nodes[0] !in nodes[0].neighbors)
+    }
+
+    @Test
     fun `no multiple edges between nodes`() {
         graph.addEdge(nodes[0], nodes[1])
         graph.addEdge(nodes[0], nodes[1])

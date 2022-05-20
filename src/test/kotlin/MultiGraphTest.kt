@@ -39,6 +39,14 @@ class MultiGraphTest {
     }
 
     @Test
+    fun `loop edges`() {
+        graph.addEdge(nodes[0], nodes[0])
+        assert(nodes[0] in nodes[0].neighbors)
+        graph.removeEdge(nodes[0], nodes[0])
+        assert(nodes[0] !in nodes[0].neighbors)
+    }
+
+    @Test
     fun `multiple edges between nodes`() {
         graph.addEdge(nodes[0], nodes[1])
         graph.addEdge(nodes[0], nodes[1])

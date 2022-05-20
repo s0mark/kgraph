@@ -8,7 +8,7 @@ abstract class NodeBase<T, N : Node<T, N>>(
 ) : Node<T, N> {
     internal abstract fun addEdge(to: N)
     internal abstract fun removeEdge(to: N)
-    override fun toString(): String = "$value"
+    override fun toString(): String = "Node[$value]"
 }
 
 class SimpleNode<T>(value: T) : NodeBase<T, SimpleNode<T>>(value) {
@@ -16,7 +16,7 @@ class SimpleNode<T>(value: T) : NodeBase<T, SimpleNode<T>>(value) {
     override val neighbors: Collection<SimpleNode<T>> = _neighbors
 
     override fun addEdge(to: SimpleNode<T>) {
-        _neighbors.add(to)
+        if (to !== this) _neighbors.add(to)
     }
 
     override fun removeEdge(to: SimpleNode<T>) {
@@ -47,8 +47,8 @@ class WeightedNode<T>(value: T) : NodeBase<T, WeightedNode<T>>(value) {
 
     override fun addEdge(to: WeightedNode<T>) = addEdge(to, 1.0)
 
-    internal fun addEdge(node: WeightedNode<T>, weight: Double) {
-        _neighbors[node] = weight
+    internal fun addEdge(to: WeightedNode<T>, weight: Double) {
+        if (to !== this) _neighbors[to] = weight
     }
 
     override fun removeEdge(to: WeightedNode<T>) {
