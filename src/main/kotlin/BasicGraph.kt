@@ -26,6 +26,13 @@ class UndirectedMultiGraph<T>
         return MultiNode(value).also(::addNode)
     }
 
+    override fun removeNode(node: MultiNode<T>) {
+        nodes.forEach {
+            it.removeAllEdges(node)
+        }
+        _nodes.remove(node)
+    }
+
     override fun removeAllEdges(from: MultiNode<T>, to: MultiNode<T>) {
         from.removeAllEdges(to)
         to.removeAllEdges(from)

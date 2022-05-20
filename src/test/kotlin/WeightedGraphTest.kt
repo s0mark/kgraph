@@ -1,13 +1,20 @@
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
+import org.junit.Before
 import org.junit.Test
 
 class WeightedGraphTest {
+    private val graph = WeightedUndirectedGraph<Int>()
+    private lateinit var nodes: List<WeightedNode<Int>>
     private val tolerance = 0.00001
+
+    @Before
+    fun setup() {
+        nodes = (0..2).map { graph.addNodeOf(it) }
+    }
 
     @Test
     fun `create node`() {
-        val graph: WeightedUndirectedGraph<Int> = WeightedUndirectedGraph()
         val nodes = (0..2).map { graph.addNodeOf(it) }
         assertEquals(0, nodes[0].value)
         assertEquals(1, nodes[1].value)
@@ -17,7 +24,6 @@ class WeightedGraphTest {
 
     @Test
     fun `modify nodes`() {
-        val graph: WeightedUndirectedGraph<Int> = WeightedUndirectedGraph()
         val nodes: List<WeightedNode<Int>> = (0.. 2).map { WeightedNode(it) }
         graph.addNode(nodes[0])
         graph.addNode(nodes[1])
@@ -28,10 +34,25 @@ class WeightedGraphTest {
     }
 
     @Test
+    fun `edges are bidirectional`() {
+        graph.addEdge(nodes[0], nodes[1])
+        assert(nodes[0] in nodes[1].neighbors)
+        assert(nodes[1] in nodes[0].neighbors)
+    }
+
+    @Test
+    fun `no multiple edges between nodes`() {
+        graph.addEdge(nodes[0], nodes[1])
+        graph.addEdge(nodes[0], nodes[1])
+        assert(nodes[0] in nodes[1].neighbors)
+        assert(nodes[1] in nodes[0].neighbors)
+        graph.removeEdge(nodes[0], nodes[1])
+        assert(nodes[0] !in nodes[1].neighbors)
+        assert(nodes[1] !in nodes[0].neighbors)
+    }
+
+    @Test
     fun `modify edges`() {
-        val graph: WeightedUndirectedGraph<Int> = WeightedUndirectedGraph()
-        (0.. 2).forEach { graph.addNode(WeightedNode(it)) }
-        val nodes: List<WeightedNode<Int>> = graph.nodes.toList()
         graph.addEdge(nodes[0], nodes[1])
         graph.addEdge(nodes[1], nodes[2], 3.0)
         assert(nodes[1] in nodes[0].neighbors)
